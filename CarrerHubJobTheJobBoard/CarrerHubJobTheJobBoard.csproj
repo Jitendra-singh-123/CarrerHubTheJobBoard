@@ -34,6 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,11 +44,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="myexception\ApplicantNotFoundException.cs" />
+    <Compile Include="DAO\DatabaseManager.cs" />
+    <Compile Include="entity\Applicant.cs" />
+    <Compile Include="entity\Company.cs" />
+    <Compile Include="entity\JobApplication.cs" />
+    <Compile Include="entity\JobListing.cs" />
+    <Compile Include="myexception\ApplicationNotFoundException.cs" />
+    <Compile Include="myexception\CompanyNotFoundException.cs" />
+    <Compile Include="myexception\JobNotFoundException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\UtilClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
