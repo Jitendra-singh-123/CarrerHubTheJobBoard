@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CarrerHubJobTheJobBoard.entity
@@ -30,18 +31,36 @@ namespace CarrerHubJobTheJobBoard.entity
         }
         public void CreateProfile(string email, string firstName, string lastName, string phone)
         {
-            Applicant a = new Applicant
+            try
             {
-                Email = email,
-                FirstName = firstName,
-                LastName = lastName,
-                Phone = phone,
-            };
+                ValidateEmailFormat(email); // Validate email format before creating the profile
 
-            DatabaseManager.InsertApplicant(a);
+                Applicant a = new Applicant
+                {
+                    Email = email,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Phone = phone,
+                };
+
+                DatabaseManager.InsertApplicant(a);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
         }//done
 
+        private void ValidateEmailFormat(string email)
+        {
+            // Simple email format validation using regular expression
+            string emailPattern = @"^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$";
 
+            if (!Regex.IsMatch(email, emailPattern))
+            {
+                throw new InvalidEmailFormatException("Invalid email format. Please enter a valid email address.");
+            }
+        }
         // Method to apply for a job
         public void ApplyForJob(int jobID, string coverLetter)
         {

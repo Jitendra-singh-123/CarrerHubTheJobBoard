@@ -37,9 +37,17 @@ namespace CarrerHubJobTheJobBoard.entity
 
         public void Apply(int applicantID, string coverLetter)
         {
-            Console.WriteLine("Enter Job id:");
-            int jobid = int.Parse(Console.ReadLine());
-            DatabaseManager.ApplyForJob(jobid, applicantID,coverLetter);
+            try
+            {
+                Console.WriteLine("Enter Job id:");
+                int jobid = int.Parse(Console.ReadLine());
+                DatabaseManager.FindJobByID(jobid);
+                DatabaseManager.ApplyForJob(applicantID, jobid, coverLetter);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
         }
 

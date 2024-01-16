@@ -13,6 +13,42 @@ namespace CarrerHubJobTheJobBoard.DAO
     public class DatabaseManager
     {
 
+        public static  decimal CalculateAverageSalary()
+        {
+            try
+            {
+                using (SqlConnection conn = UtilClass.GetConnection())
+                {
+                    conn.Open();
+                    string query = "SELECT AVG(CASE WHEN Salary >= 0 THEN Salary END) AS AverageSalary FROM Jobs";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        // Execute the query and retrieve the average salary
+                        object result = cmd.ExecuteScalar();
+
+                        // Check if the result is not DBNull and not null
+                        if (result != DBNull.Value && result != null)
+                        {
+                            decimal averageSalary = Convert.ToDecimal(result);
+                            return averageSalary;
+                        }
+                        else
+                        {
+                            // Handle the case when there are no non-negative salaries
+                            throw new SalaryCalculationHandling("No non-negative salaries found to calculate the average salary");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (e.g., display an error message)
+                Console.WriteLine($"Error: {ex.Message}");
+                return -1; // Or any other suitable value indicating an error
+            }
+        }
+
         public static bool FindJobByID(int id)
         {
             try
@@ -50,7 +86,7 @@ namespace CarrerHubJobTheJobBoard.DAO
                     SqlConnection conn = UtilClass.GetConnection();
                     conn = UtilClass.GetConnection();
                     conn.Open();
-                    string query = $@"SELECT * FROM Applicants WHERE ApplicantID = {id};";
+                    string query = $"SELECT * FROM Applicants WHERE ApplicantID = {id};";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     SqlDataReader dr = cmd.ExecuteReader();
                     if (dr.Read())
@@ -200,16 +236,38 @@ namespace CarrerHubJobTheJobBoard.DAO
             {
                 SqlConnection conn = UtilClass.GetConnection();
                 conn.Open();
-                string applyForJobQuery = $@"
-                INSERT INTO Applications (JobID, ApplicantID, ApplicationDate, CoverLetter)
-                VALUES ({jobID}, {applicantID}, GETDATE(), '{coverLetter}')";
 
-                SqlCommand cmd = new SqlCommand(applyForJobQuery, conn);
-                int rowsaffected = cmd.ExecuteNonQuery();
-                if (rowsaffected > 0)
-                    Console.WriteLine("Applied for job");
+                // Check if the application date is greater than the job posted date
+                string checkDateQuery = "SELECT 1 FROM Jobs WHERE JobID = @JobID AND GETDATE() < PostedDate";
+                SqlCommand checkDateCmd = new SqlCommand(checkDateQuery, conn);
+                checkDateCmd.Parameters.AddWithValue("@JobID", jobID);
+
+                if (checkDateCmd.ExecuteScalar() != null)
+                {
+                    // Proceed with the application
+                    string applyForJobQuery = @"
+                INSERT INTO Applications (JobID, ApplicantID, ApplicationDate, CoverLetter)
+                VALUES (@JobID, @ApplicantID, GETDATE(), @CoverLetter)";
+
+                    SqlCommand cmd = new SqlCommand(applyForJobQuery, conn);
+                    cmd.Parameters.AddWithValue("@JobID", jobID);
+                    cmd.Parameters.AddWithValue("@ApplicantID", applicantID);
+                    cmd.Parameters.AddWithValue("@CoverLetter", coverLetter);
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        Console.WriteLine("Applied for job");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Not able to apply");
+                    }
+                }
                 else
-                    Console.WriteLine("Not ablel to Apply");
+                {
+                    throw new ApplicationDeadline();
+                }
             }
             catch (Exception e)
             {

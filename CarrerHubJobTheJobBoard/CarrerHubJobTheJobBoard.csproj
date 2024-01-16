@@ -50,9 +50,12 @@
     <Compile Include="entity\Company.cs" />
     <Compile Include="entity\JobApplication.cs" />
     <Compile Include="entity\JobListing.cs" />
+    <Compile Include="myexception\ApplicationDeadline.cs" />
     <Compile Include="myexception\ApplicationNotFoundException.cs" />
     <Compile Include="myexception\CompanyNotFoundException.cs" />
+    <Compile Include="myexception\InvalidEmailFormatException.cs" />
     <Compile Include="myexception\JobNotFoundException.cs" />
+    <Compile Include="myexception\SalaryCalculationHandling.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\UtilClass.cs" />

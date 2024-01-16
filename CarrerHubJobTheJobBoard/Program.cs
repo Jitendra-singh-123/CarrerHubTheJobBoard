@@ -18,7 +18,7 @@ namespace CarrerHubJobTheJobBoard
                 do
                 {
 
-                    Console.WriteLine("1.Apply for the job");
+                    Console.WriteLine("\n1.Apply for the job");
                     Console.WriteLine("2. Create Profile");
                     Console.WriteLine("3. Post Job");
                     Console.WriteLine("4. Get Job");
@@ -27,9 +27,12 @@ namespace CarrerHubJobTheJobBoard
                     Console.WriteLine("7.  Get Companies");
                     Console.WriteLine("8.  Get Application for Specific job listing");
                     Console.WriteLine("9. Search Jobs within specified range of salary");
+                    Console.WriteLine("10. calculate average salary");
+
                     Console.WriteLine("Enter your choice ");
+                    Console.WriteLine();
                     choice = int.Parse(Console.ReadLine());
-                 
+
                     Company c = new Company();
                     Applicant applicant = new Applicant();
                     JobListing job = new JobListing();
@@ -47,19 +50,26 @@ namespace CarrerHubJobTheJobBoard
                                 string s = Console.ReadLine();
                                 applicant.ApplyForJob(jobid, s);
                             }
-                            catch(Exception e)
+                            catch (Exception e)
                             {
                                 Console.WriteLine(e.Message);
                             }
                             break;
 
                         case 2:
-                            Console.WriteLine("Enter email,first name,last name and phone number");
-                            string em = Console.ReadLine();
-                            string fn = Console.ReadLine();
-                            string ln = Console.ReadLine();
-                            string pn = Console.ReadLine();
-                            applicant.CreateProfile(em, fn, ln, pn);
+                            try
+                            {
+                                Console.WriteLine("Enter email,first name,last name and phone number");
+                                string em = Console.ReadLine();
+                                string fn = Console.ReadLine();
+                                string ln = Console.ReadLine();
+                                string pn = Console.ReadLine();
+                                applicant.CreateProfile(em, fn, ln, pn);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
                             break;
 
                         case 3:
@@ -75,7 +85,7 @@ namespace CarrerHubJobTheJobBoard
                                 string type = Console.ReadLine();
                                 c.PostJob(compID, title, desc, loc, salary, type);
                             }
-                            catch(Exception e)
+                            catch (Exception e)
                             {
                                 Console.WriteLine(e.Message);
                             }
@@ -98,9 +108,10 @@ namespace CarrerHubJobTheJobBoard
                                 int appid = int.Parse(Console.ReadLine());
                                 DatabaseManager.FindApplicantByID(appid);
                                 string coverletter = Console.ReadLine();
+
                                 job.Apply(appid, coverletter);
                             }
-                            catch(Exception e)
+                            catch (Exception e)
                             {
                                 Console.WriteLine(e.Message);
                             }
@@ -134,7 +145,7 @@ namespace CarrerHubJobTheJobBoard
                                     Console.WriteLine($"\nApplicationID : {j.ApplicationID}\nJobID: {j.JobID}\nApplicantID: {j.ApplicantID}\nApplication Date: {j.ApplicationDate}\nCover Letter: {j.CoverLetter}");
                                 }
                             }
-                            catch(Exception e)
+                            catch (Exception e)
                             {
                                 Console.WriteLine(e.Message);
                             }
@@ -153,12 +164,15 @@ namespace CarrerHubJobTheJobBoard
                                     Console.WriteLine($"\nJobID : {j.JobID}\nCompanyID : {j.CompanyID}\nJob title : {j.JobTitle}\nDescription: {j.JobDescription}\nLocation: {j.JobLocation}\nSalary: {j.Salary}\nJob Type: {j.JobType}");
                                 }
                             }
-                            catch(Exception e)
+                            catch (Exception e)
                             {
                                 Console.WriteLine(e.Message);
                             }
                             break;
 
+                        case 10:
+                            Console.WriteLine("Average salary: " + DatabaseManager.CalculateAverageSalary());
+                            break;
                         default:
                             Console.WriteLine("Invalid Option");
                             break;
