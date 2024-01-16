@@ -275,7 +275,7 @@ namespace CarrerHubJobTheJobBoard.DAO
                 {
                     conn.Open();
                     string getApplicantsQuery = "SELECT * FROM Applicants";
-                    List<Applicant> applicants = new List<Applicant>();
+                    List<Applicant> applicantsList = new List<Applicant>();
                     SqlCommand cmd = new SqlCommand(getApplicantsQuery, conn);
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
@@ -290,9 +290,9 @@ namespace CarrerHubJobTheJobBoard.DAO
                             Resume = reader["Resume"].ToString()
                         };
 
-                        applicants.Add(applicant);
+                        applicantsList.Add(applicant);
                     }
-                    return applicants;
+                    return applicantsList;
                 }
             }
             catch (Exception e)
@@ -396,7 +396,7 @@ namespace CarrerHubJobTheJobBoard.DAO
                 {
                     conn.Open();
                     string query = "SELECT * FROM Companies";
-                    List<Company> cmp = new List<Company>();
+                    List<Company> companyList = new List<Company>();
                     SqlCommand cmd = new SqlCommand(query, conn);
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
@@ -408,9 +408,9 @@ namespace CarrerHubJobTheJobBoard.DAO
                             Location = reader.GetString(2),
                         };
 
-                        cmp.Add(comp);
+                        companyList.Add(comp);
                     }
-                    return cmp;
+                    return companyList;
                 }
             }
             catch (Exception e)

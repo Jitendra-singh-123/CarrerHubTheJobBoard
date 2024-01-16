@@ -17,7 +17,7 @@ namespace CarrerHubJobTheJobBoard
             {
                 do
                 {
-                    Console.WriteLine("\n-----------------------------------Menu Drive program-----------------------------------------------------");
+                    Console.WriteLine("\n-------------------------------------------Menu Driven program-----------------------------------------------------");
                     Console.WriteLine("\n1.Apply for the job");
                     Console.WriteLine("2. Create Profile");
                     Console.WriteLine("3. Post Job");
@@ -33,7 +33,7 @@ namespace CarrerHubJobTheJobBoard
                     Console.WriteLine();
                     choice = int.Parse(Console.ReadLine());
 
-                    Company c = new Company();
+                    Company company = new Company();
                     Applicant applicant = new Applicant();
                     JobListing job = new JobListing();
                     switch (choice)
@@ -43,12 +43,12 @@ namespace CarrerHubJobTheJobBoard
                             Console.WriteLine("Enter Job Id");
                             try
                             {
-                                int jobid = int.Parse(Console.ReadLine());
-                                DatabaseManager.FindJobByID(jobid);
+                                int jobId = int.Parse(Console.ReadLine());
+                                DatabaseManager.FindJobByID(jobId);
 
                                 Console.WriteLine("Enter Cover Letter");
-                                string s = Console.ReadLine();
-                                applicant.ApplyForJob(jobid, s);
+                                string coverLetter = Console.ReadLine();
+                                applicant.ApplyForJob(jobId, coverLetter);
                             }
                             catch (Exception e)
                             {
@@ -60,11 +60,11 @@ namespace CarrerHubJobTheJobBoard
                             try
                             {
                                 Console.WriteLine("Enter email,first name,last name and phone number");
-                                string em = Console.ReadLine();
-                                string fn = Console.ReadLine();
-                                string ln = Console.ReadLine();
-                                string pn = Console.ReadLine();
-                                applicant.CreateProfile(em, fn, ln, pn);
+                                string email = Console.ReadLine();
+                                string firstName = Console.ReadLine();
+                                string lastName = Console.ReadLine();
+                                string phoneNumber = Console.ReadLine();
+                                applicant.CreateProfile(email, firstName, lastName, phoneNumber);
                             }
                             catch (Exception e)
                             {
@@ -83,7 +83,7 @@ namespace CarrerHubJobTheJobBoard
                                 string loc = Console.ReadLine();
                                 decimal salary = decimal.Parse(Console.ReadLine());
                                 string type = Console.ReadLine();
-                                c.PostJob(compID, title, desc, loc, salary, type);
+                                company.PostJob(compID, title, desc, loc, salary, type);
                             }
                             catch (Exception e)
                             {
@@ -93,7 +93,7 @@ namespace CarrerHubJobTheJobBoard
 
                         case 4:
                             List<JobListing> jobListings = new List<JobListing>();
-                            jobListings = c.GetJobs();
+                            jobListings = company.GetJobs();
                             foreach (JobListing j in jobListings)
                             {
                                 Console.WriteLine($"\nJobID : {j.JobID}\nCompanyID : {j.CompanyID}\nJob title : {j.JobTitle}\nDescription: {j.JobDescription}\nLocation: {j.JobLocation}\nSalary: {j.Salary}\nJob Type: {j.JobType}");
@@ -105,11 +105,11 @@ namespace CarrerHubJobTheJobBoard
                             Console.WriteLine("Enter applicant id and cover letter");
                             try
                             {
-                                int appid = int.Parse(Console.ReadLine());
-                                DatabaseManager.FindApplicantByID(appid);
-                                string coverletter = Console.ReadLine();
+                                int appId = int.Parse(Console.ReadLine());
+                                DatabaseManager.FindApplicantByID(appId);
+                                string coverLetter = Console.ReadLine();
 
-                                job.Apply(appid, coverletter);
+                                job.Apply(appId, coverLetter);
                             }
                             catch (Exception e)
                             {
@@ -117,17 +117,17 @@ namespace CarrerHubJobTheJobBoard
                             }
                             break;
                         case 6:
-                            List<Applicant> applicants = new List<Applicant>();
-                            applicants = job.GetApplicants();
-                            foreach (Applicant ap in applicants)
+                            List<Applicant> applicantsList = new List<Applicant>();
+                            applicantsList = job.GetApplicants();
+                            foreach (Applicant ap in applicantsList)
                             {
                                 Console.WriteLine($"\nApplicantId : {ap.ApplicantID}\nFirst Name: {ap.FirstName}\nLast Name: {ap.LastName}\nEmail: {ap.Email}\nResume: {ap.Resume}\nPhone Number: {ap.Phone}");
                             }
                             break;
                         case 7:
-                            List<Company> cmp = new List<Company>();
-                            cmp = DatabaseManager.GetCompanies();
-                            foreach (Company cp in cmp)
+                            List<Company> companyList = new List<Company>();
+                            companyList = DatabaseManager.GetCompanies();
+                            foreach (Company cp in companyList)
                             {
                                 Console.WriteLine($"\nCompanyID : {cp.CompanyID}\nName: {cp.CompanyName}\nLocation: {cp.Location}");
                             }
@@ -135,12 +135,12 @@ namespace CarrerHubJobTheJobBoard
                         case 8:
                             try
                             {
-                                List<JobApplication> ja = new List<JobApplication>();
+                                List<JobApplication> jobApplicationList = new List<JobApplication>();
                                 Console.WriteLine("Enter jobid for which you want to retrieve job application");
                                 int jobID = int.Parse(Console.ReadLine());
                                 DatabaseManager.FindJobByID(jobID);
-                                ja = DatabaseManager.GetApplicationsForJob(jobID);
-                                foreach (JobApplication j in ja)
+                                jobApplicationList = DatabaseManager.GetApplicationsForJob(jobID);
+                                foreach (JobApplication j in jobApplicationList)
                                 {
                                     Console.WriteLine($"\nApplicationID : {j.ApplicationID}\nJobID: {j.JobID}\nApplicantID: {j.ApplicantID}\nApplication Date: {j.ApplicationDate}\nCover Letter: {j.CoverLetter}");
                                 }
