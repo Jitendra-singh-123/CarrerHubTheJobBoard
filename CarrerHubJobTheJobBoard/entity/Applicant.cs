@@ -29,6 +29,14 @@ namespace CarrerHubJobTheJobBoard.entity
             Phone = phone;
             Resume = resume;
         }
+
+        /// <summary>
+        /// Creates a new applicant profile with the provided information after validating the email format.
+        /// </summary>
+        /// <param name="email">The email address of the applicant.</param>
+        /// <param name="firstName">The first name of the applicant.</param>
+        /// <param name="lastName">The last name of the applicant.</param>
+        /// <param name="phone">The phone number of the applicant.</param>
         public void CreateProfile(string email, string firstName, string lastName, string phone)
         {
             try
@@ -51,6 +59,11 @@ namespace CarrerHubJobTheJobBoard.entity
             }
         }//done
 
+        /// <summary>
+        /// Validates the email format using a regular expression.
+        /// </summary>
+        /// <param name="email">The email address to be validated.</param>
+        /// <exception cref="InvalidEmailFormatException">Thrown when the email format is invalid.</exception>
         private void ValidateEmailFormat(string email)
         {
             // Simple email format validation using regular expression
@@ -62,6 +75,11 @@ namespace CarrerHubJobTheJobBoard.entity
             }
         }
         // Method to apply for a job
+        /// <summary>
+        /// Allows an applicant to apply for a job by providing the job ID and a cover letter.
+        /// </summary>
+        /// <param name="jobID">The ID of the job the applicant is applying for.</param>
+        /// <param name="coverLetter">The cover letter submitted with the job application.</param>
         public void ApplyForJob(int jobID, string coverLetter)
         {
             try

@@ -35,6 +35,11 @@ namespace CarrerHubJobTheJobBoard.entity
             PostedDate = postedDate;
         }
 
+        /// <summary>
+        /// Allows an applicant to apply for a job by providing the applicant ID, job ID, and a cover letter.
+        /// </summary>
+        /// <param name="applicantID">The ID of the applicant applying for the job.</param>
+        /// <param name="coverLetter">The cover letter submitted by the applicant.</param>
         public void Apply(int applicantID, string coverLetter)
         {
             try
@@ -51,6 +56,10 @@ namespace CarrerHubJobTheJobBoard.entity
 
         }
 
+        /// <summary>
+        /// Retrieves a list of all applicants from the database.
+        /// </summary>
+        /// <returns>A list of Applicant objects representing the applicants.</returns>
         public List<Applicant> GetApplicants()
         {
             return DatabaseManager.GetApplicants();
